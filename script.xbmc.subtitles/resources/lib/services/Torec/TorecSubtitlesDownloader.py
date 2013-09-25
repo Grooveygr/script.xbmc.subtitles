@@ -180,8 +180,12 @@ class TorecSubtitlesDownloader:
                     
                     #convert file from cp1255 to utf-8
                     tempFileName=srtFile+ ".tmp"
-                    convert_file(srtFile,tempFileName)
-                    shutil.copy(tempFileName,srtFile)
+                    try:
+                    	convert_file(srtFile,tempFileName)
+                    	shutil.copy(tempFileName,srtFile)
+                    except UnicodeDecodeError:
+            			log(__name__, "Conversion to UTF8 failed. (SRT might not be cp1255)")
+                    
                     os.remove(tempFileName)
             
     def sanitize(self, name):
